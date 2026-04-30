@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Self-awareness self-assessment — Nordic Edge</title>
+<meta name="description" content="An eleven-question self-assessment from Nordic Edge. Five minutes, your result in your inbox as a PDF.">
+<link rel="stylesheet" href="./assets/colors_and_type.css">
+
+<style>
+  /* =========================================================
+     LAYOUT
+     ========================================================= */
+  .ne-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-pad); }
+  @media (min-width: 1024px) { .ne-container { padding: 0 var(--container-pad-lg); } }
+
+  /* =========================================================
+     HEADER
+     ========================================================= */
+  .ne-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgb(255 255 255 / 0.92);
+    border-bottom: 1px solid var(--border);
+  }
+  .ne-header__inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  .ne-header__logo img { height: 28px; display: block; }
+  .ne-header__lang {
+    font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase;
+    font-weight: var(--font-medium); color: var(--fg-subtle);
+  }
+
+  /* =========================================================
+     HERO
+     ========================================================= */
+  .ne-hero { padding: 80px 0 56px; }
+  @media (min-width: 1024px) { .ne-hero { padding: 120px 0 80px; } }
+
+  .ne-eyebrow {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    font-weight: var(--font-medium);
+    color: var(--accent);
+    margin: 0 0 20px;
+  }
+
+  .ne-hero h1 {
+    font-family: var(--font-headline);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+    max-width: 18ch;
+  }
+
+  .ne-hero .lead {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    line-height: 1.5;
+    color: var(--fg);
+    margin: 0 0 20px;
+    max-width: 56ch;
+  }
+
+  .ne-hero p {
+    font-size: var(--text-lg);
+    line-height: 1.55;
+    color: var(--fg-muted);
+    margin: 0 0 12px;
+    max-width: 60ch;
+  }
+
+  /* =========================================================
+     FORM SECTION
+     ========================================================= */
+  .ne-form-wrap { padding: 24px 0 96px; }
+
+  /* N-cut bullet list (used in instructions) */
+  .ne-list { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-direction: column; gap: 14px; max-width: 56ch; }
+  .ne-list li { display: flex; gap: 14px; align-items: flex-start; font-size: var(--text-base); color: var(--fg-muted); line-height: 1.5; }
+  .ne-list .bullet { width: 24px; height: 6px; flex-shrink: 0; margin-top: 9px; color: var(--fg); }
+
+  /* Questions grid — one column on mobile, two on desktop */
+  #questions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    margin-top: 8px;
+  }
+  @media (min-width: 1024px) {
+    #questions { grid-template-columns: 1fr 1fr; column-gap: 64px; row-gap: 40px; }
+  }
+
+  /* Question block */
+  .question { margin: 0; }
+
+  .question__num {
+    font-family: var(--font-subheading);
+    font-size: var(--text-sm);
+    color: var(--fg-subtle);
+    letter-spacing: 0.06em;
+    margin: 0 0 4px;
+  }
+
+  .question__text {
+    font-family: var(--font-body);
+    font-weight: var(--font-semibold);
+    font-size: var(--text-lg);
+    line-height: 1.4;
+    margin: 0 0 14px;
+    color: var(--fg);
+  }
+
+  .endpoints {
+    display: flex; justify-content: space-between;
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--fg-subtle);
+    margin-bottom: 6px;
+  }
+
+  /* =========================================================
+     SLIDER
+     - Track: ice blue
+     - Fill: dark blue (set inline via JS)
+     - Thumb: dark blue, sharp rectangle (echoes the N-cut)
+     ========================================================= */
+  .slider-wrap { position: relative; }
+
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 14px;
+    border-radius: 7px;
+    background: linear-gradient(to right,
+      var(--fg) 0%, var(--fg) var(--pos, 50%),
+      var(--bg-soft) var(--pos, 50%), var(--bg-soft) 100%);
+    outline: none; margin: 0; cursor: pointer;
+  }
+  input[type="range"]:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 4px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 6px; height: 26px;
+    background: var(--fg);
+    border: none; border-radius: 0;
+    cursor: grab; margin-top: 0;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 6px; height: 26px;
+    background: var(--fg);
+    border: none; border-radius: 0;
+    cursor: grab;
+  }
+  input[type="range"]::-moz-range-track {
+    height: 14px; border-radius: 7px;
+    background: linear-gradient(to right,
+      var(--fg) 0%, var(--fg) var(--pos, 50%),
+      var(--bg-soft) var(--pos, 50%), var(--bg-soft) 100%);
+  }
+
+  /* Print-only slider replica — hidden on screen, drawn in print */
+  .slider-print { display: none; }
+  .question__value { display: none; }
+
+  .scale-numbers {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-subheading);
+    font-size: var(--text-base);
+    color: var(--fg-muted);
+    margin-top: 8px;
+    padding: 0 1px;
+  }
+
+  /* =========================================================
+     EMAIL + SUBMIT (ice blue card)
+     ========================================================= */
+  .submit-card {
+    margin-top: 56px;
+    background: var(--bg-soft);
+    border-radius: var(--radius-xl);
+    padding: 40px;
+  }
+  .submit-card h3 {
+    font-family: var(--font-subheading);
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.1;
+    margin: 0 0 8px;
+    font-weight: var(--font-regular);
+    color: var(--fg);
+  }
+  .submit-card p {
+    font-size: var(--text-base);
+    color: var(--fg-muted);
+    margin: 0 0 24px;
+    max-width: 56ch;
+  }
+  .submit-card .alt-action {
+    font-size: var(--text-sm);
+    margin: -12px 0 28px;
+  }
+  .submit-card .alt-action kbd {
+    background: var(--bg);
+    border: 1px solid var(--fg-faint);
+    border-radius: var(--radius-sm);
+    padding: 1px 6px;
+    font-size: 0.85em;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 8px; max-width: 480px; }
+  .field label {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    font-weight: var(--font-medium);
+    color: var(--fg-subtle);
+  }
+  .field input[type="email"] {
+    padding: 14px 22px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--fg);
+    background: transparent;
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    outline: none;
+  }
+  .field input[type="email"]::placeholder { color: var(--fg-faint); }
+  .field input[type="email"]:focus { border-color: var(--accent); }
+
+  .ne-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-full);
+    font-weight: var(--font-medium);
+    padding: 16px 38px;
+    font-size: var(--text-base);
+    border: 0; cursor: pointer;
+    transition: all 160ms ease;
+    font-family: inherit; line-height: 1;
+  }
+  .ne-btn--primary { background: var(--fg); color: var(--fg-on-dark); }
+  .ne-btn--primary:hover { background: rgb(35 0 100 / 0.88); }
+  .ne-btn--primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .submit-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 24px; }
+
+  .status {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    min-height: 20px;
+  }
+  .status.is-error { color: var(--accent); }
+
+  .helper {
+    font-size: var(--text-xs);
+    color: var(--fg-subtle);
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+
+  /* =========================================================
+     THANK YOU / FOOTER
+     ========================================================= */
+  .ne-section--bg-dark { background: var(--bg-dark); color: var(--fg-on-dark); }
+  .ne-section--bg-dark .ne-eyebrow { color: rgb(255 255 255 / 0.65); }
+
+  .ne-thanks { padding: 96px 0; display: none; }
+  .ne-thanks h2 {
+    font-family: var(--font-headline);
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+    margin: 0 0 20px;
+    max-width: 22ch;
+    color: var(--fg-on-dark);
+  }
+  .ne-thanks p { font-size: var(--text-lg); color: var(--fg-on-dark-muted); max-width: 56ch; margin: 0 0 28px; }
+
+  .ne-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--fg-on-dark);
+    border-bottom: 1px solid rgb(255 255 255 / 0.4);
+    padding-bottom: 2px;
+    font-size: var(--text-base);
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .ne-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  .ne-footer { background: var(--bg-dark); color: var(--fg-on-dark); padding: 56px 0 32px; }
+  .ne-footer__top {
+    display: grid; grid-template-columns: 1fr; gap: 32px;
+    padding-bottom: 32px; border-bottom: 1px solid var(--border-on-dark);
+  }
+  @media (min-width: 800px) { .ne-footer__top { grid-template-columns: 1fr auto; align-items: center; } }
+  .ne-footer__logo img { height: 36px; }
+  .ne-footer__tag {
+    font-family: var(--font-headline);
+    font-size: var(--text-xl);
+    line-height: 1.2;
+    margin: 12px 0 0;
+    color: var(--fg-on-dark);
+  }
+  .ne-footer__loc {
+    font-size: var(--text-sm); color: var(--fg-on-dark-muted); margin: 6px 0 0;
+  }
+  .ne-footer__bot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px; font-size: var(--text-xs); color: var(--fg-on-dark-subtle);
+    flex-wrap: wrap; gap: 16px;
+    letter-spacing: 0.06em;
+  }
+
+  /* =========================================================
+     RESPONSIVE
+     ========================================================= */
+  @media (max-width: 600px) {
+    .submit-card { padding: 28px 22px; }
+    .question__text { font-size: var(--text-base); }
+  }
+
+  /* =========================================================
+     PRINT — preserves answers, hides UI chrome,
+     replaces native sliders with a printable bar + marker.
+     ========================================================= */
+  @media print {
+    @page { margin: 14mm; }
+
+    html, body {
+      background: #fff !important;
+      color: #230064 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      font-size: 10pt;
+    }
+
+    /* Hide UI chrome that doesn't belong in the printed snapshot */
+    .ne-header,
+    .ne-footer,
+    .ne-thanks,
+    .submit-card,
+    .ne-hero .ne-list,
+    .ne-hero .ne-eyebrow { display: none !important; }
+
+    /* Compact hero — keep the title, drop the rest */
+    .ne-hero { padding: 0 0 6mm !important; }
+    .ne-hero h1 {
+      font-size: 22pt !important;
+      line-height: 1.1 !important;
+      margin: 0 0 4mm !important;
+      max-width: none !important;
+    }
+    .ne-hero .lead {
+      font-size: 11pt !important;
+      margin: 0 0 2mm !important;
+      color: #230064 !important;
+    }
+    .ne-hero p {
+      font-size: 9.5pt !important;
+      margin: 0 0 2mm !important;
+      color: #230064 !important;
+    }
+
+    .ne-form-wrap { padding: 0 !important; }
+    .ne-container { max-width: 100% !important; padding: 0 !important; }
+
+    /* Single column in print — keeps page breaks tidy */
+    #questions {
+      grid-template-columns: 1fr !important;
+      gap: 7mm !important;
+      margin-top: 0 !important;
+    }
+
+    /* Don't split a question across pages */
+    .question {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      margin: 0 !important;
+    }
+
+    .question__num {
+      font-size: 8pt !important;
+      color: #230064 !important;
+      opacity: 0.6;
+      margin: 0 0 1mm !important;
+    }
+    .question__text {
+      font-size: 11pt !important;
+      color: #230064 !important;
+      margin: 0 0 2mm !important;
+    }
+    .endpoints {
+      font-size: 8.5pt !important;
+      color: #230064 !important;
+      opacity: 0.75;
+      margin: 0 0 1.5mm !important;
+    }
+    .scale-numbers {
+      font-size: 8pt !important;
+      color: #230064 !important;
+      opacity: 0.6;
+      margin-top: 1.5mm !important;
+    }
+
+    /* Replace native slider with a printable bar + marker driven by --pos */
+    input[type="range"] { display: none !important; }
+    .slider-print {
+      display: block !important;
+      position: relative;
+      height: 4mm;
+      border-radius: 2mm;
+      background: linear-gradient(to right,
+        #230064 0%, #230064 var(--pos, 50%),
+        #c8e1ff var(--pos, 50%), #c8e1ff 100%) !important;
+      border: 0.4pt solid #230064;
+    }
+    .slider-print::after {
+      content: "";
+      position: absolute;
+      left: var(--pos, 50%);
+      top: -1.5mm;
+      width: 1mm;
+      height: 7mm;
+      background: #230064 !important;
+      transform: translateX(-50%);
+    }
+
+    /* Show the chosen numeric value in print */
+    .question__value {
+      display: block !important;
+      margin: 2mm 0 0 !important;
+      font-family: var(--font-subheading);
+      font-size: 9pt;
+      color: #230064;
+      text-align: right;
+      letter-spacing: 0.04em;
+    }
+
+    a { color: #230064 !important; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+  HEADER
+============================================================ -->
+<header class="ne-header">
+  <div class="ne-container ne-header__inner">
+    <a href="https://nordicedge.fi" class="ne-header__logo" aria-label="Nordic Edge home">
+      <img src="./assets/logos/NordicEdge_Logo_SingleLine_DarkBlue.svg" alt="Nordic Edge">
+    </a>
+    <div class="ne-header__lang"><span>EN</span></div>
+  </div>
+</header>
+
+<!-- ============================================================
+  FORM SCREEN
+============================================================ -->
+<main id="formScreen">
+
+  <!-- HERO -->
+  <section class="ne-hero">
+    <div class="ne-container">
+      <p class="ne-eyebrow">Self-assessment</p>
+      <h1>Self-awareness self-assessment.</h1>
+      <p class="lead">Self-awareness is the foundation of leadership. Honest answers, no scoring.</p>
+      <p>Eleven questions. Five minutes. Your result in your inbox as a PDF.</p>
+
+      <ul class="ne-list" aria-hidden="false">
+        <li>
+          <svg class="bullet" viewBox="0 0 169.87 34.68" aria-hidden="true">
+            <polygon fill="currentColor" points="169.87 34.68 169.87 0 0 34.68 169.87 34.68"></polygon>
+          </svg>
+          <span>Think about what's typical for you, not who you'd like to be.</span>
+        </li>
+        <li>
+          <svg class="bullet" viewBox="0 0 169.87 34.68" aria-hidden="true">
+            <polygon fill="currentColor" points="169.87 34.68 169.87 0 0 34.68 169.87 34.68"></polygon>
+          </svg>
+          <span>Move each slider to where you sit between the two ends.</span>
+        </li>
+        <li>
+          <svg class="bullet" viewBox="0 0 169.87 34.68" aria-hidden="true">
+            <polygon fill="currentColor" points="169.87 34.68 169.87 0 0 34.68 169.87 34.68"></polygon>
+          </svg>
+          <span>Enter your email at the end. We'll send your result and nothing else.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- QUESTIONS + SUBMIT -->
+  <section class="ne-form-wrap">
+    <div class="ne-container">
+      <form id="assessmentForm" novalidate>
+        <div id="questions"></div>
+
+        <!-- Email + submit card -->
+        <div class="submit-card">
+          <h3>Send me my result.</h3>
+          <p>We'll email you a PDF showing where you placed each slider. No scoring, no profile — just your snapshot.</p>
+          <p class="alt-action">Or save it yourself: open your browser's print menu (<kbd>⌘P</kbd> on Mac, <kbd>Ctrl&nbsp;+&nbsp;P</kbd> on Windows) and choose <strong>Save as PDF</strong>.</p>
+
+          <div class="field">
+            <label for="email">Your email address</label>
+            <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" class="ne-btn ne-btn--primary" id="submitBtn">Send my result</button>
+            <span class="status" id="status" role="status" aria-live="polite"></span>
+          </div>
+
+          <p class="helper">We don't share your email. You can unsubscribe at any time — there's nothing to unsubscribe from yet.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- ============================================================
+  THANK YOU SCREEN (full-bleed dark)
+============================================================ -->
+<section class="ne-section--bg-dark ne-thanks" id="thankYou">
+  <div class="ne-container">
+    <p class="ne-eyebrow">Done</p>
+    <h2 id="thankYouHeadline">Thanks. Your result is on the way.</h2>
+    <p id="thankYouBody">Check your inbox in the next few minutes.</p>
+    <a id="downloadLink" class="ne-link" download="self-awareness-result.pdf">
+      Or download a copy of the PDF
+      <span aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============================================================
+  FOOTER
+============================================================ -->
+<footer class="ne-footer">
+  <div class="ne-container">
+    <div class="ne-footer__top">
+      <div>
+        <a href="https://nordicedge.fi" class="ne-footer__logo" aria-label="Nordic Edge">
+          <img src="./assets/logos/NordicEdge_Logo_SingleLine_White.svg" alt="Nordic Edge">
+        </a>
+        <p class="ne-footer__tag">Activate the middle.</p>
+        <p class="ne-footer__loc">Helsinki, Finland</p>
+      </div>
+      <div>
+        <a class="ne-link" href="https://nordicedge.fi">nordicedge.fi <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+    <div class="ne-footer__bot">
+      <span>&copy; <span id="year"></span> Ultima Lead Oy</span>
+      <span>Programmes &middot; For companies &middot; Keynotes</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+  LIBRARIES
+============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
+<script>
+  /* ========================================================
+     CONFIG — paste EmailJS values to enable email delivery.
+     Setup steps are in README.md.
+     ======================================================== */
+  const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
+  const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";
+  const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+  /* ======================================================== */
+
+  /* Brand tokens (kept in sync with colors_and_type.css for the PDF) */
+  const NE = {
+    darkBlue:  [35, 0, 100],
+    iceBlue:   [200, 225, 255],
+    hotPink:   [255, 55, 135],
+    white:     [255, 255, 255],
+    fgMuted:   [115, 95, 155]   // approx of rgba(35,0,100,0.65) on white
+  };
+
+  const QUESTIONS = [
+    { text: "My thoughts are often:",                                left: "In the past",         right: "In the future" },
+    { text: "When making decisions, I am:",                          left: "Slow",                right: "Quick" },
+    { text: "I prefer to do things:",                                left: "Alone",               right: "In collaboration" },
+    { text: "It is typical for me to first:",                        left: "Gather information",  right: "Take action" },
+    { text: "It is important to me that things are done properly:",  left: "Yes",                 right: "No" },
+    { text: "It is hard for me to trust others:",                    left: "Not true",            right: "True" },
+    { text: "I sense other people's emotions easily:",               left: "Not true",            right: "True" },
+    { text: "I tend to notice risks easily:",                        left: "Not true",            right: "True" },
+    { text: "I'm impatient:",                                        left: "Not true",            right: "True" },
+    { text: "Gloomy and heavy topics make me feel discouraged:",     left: "Not true",            right: "True" },
+    { text: "Getting quick results is important to me:",             left: "Not true",            right: "True" }
+  ];
+
+  /* Render slider questions */
+  const qContainer = document.getElementById("questions");
+  QUESTIONS.forEach((q, i) => {
+    const wrap = document.createElement("div");
+    wrap.className = "question";
+    wrap.innerHTML =
+      `<p class="question__num">${String(i + 1).padStart(2, "0")} / 11</p>` +
+      `<p class="question__text">${q.text}</p>` +
+      `<div class="endpoints"><span>${q.left}</span><span>${q.right}</span></div>` +
+      `<div class="slider-wrap">` +
+        `<input type="range" min="1" max="5" step="0.1" value="3" id="q${i}" aria-label="${q.text}">` +
+        `<div class="slider-print" aria-hidden="true"></div>` +
+      `</div>` +
+      `<div class="scale-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>` +
+      `<p class="question__value" aria-hidden="true"></p>`;
+    qContainer.appendChild(wrap);
+
+    const slider = wrap.querySelector("input[type=range]");
+    const sliderWrap = wrap.querySelector(".slider-wrap");
+    const valueEl = wrap.querySelector(".question__value");
+    const update = () => {
+      const v = parseFloat(slider.value);
+      const pct = ((v - 1) / 4) * 100;
+      sliderWrap.style.setProperty("--pos", pct + "%");
+      valueEl.textContent = `Selected: ${v.toFixed(1)} / 5`;
+    };
+    slider.addEventListener("input", update);
+    update();
+  });
+
+  /* EmailJS init (only if configured) */
+  const emailjsConfigured =
+    EMAILJS_PUBLIC_KEY  !== "YOUR_PUBLIC_KEY"  &&
+    EMAILJS_SERVICE_ID  !== "YOUR_SERVICE_ID"  &&
+    EMAILJS_TEMPLATE_ID !== "YOUR_TEMPLATE_ID";
+  if (emailjsConfigured && window.emailjs) {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }
+
+  /* ========================================================
+     PDF — drawn with jsPDF using NE brand tokens.
+     Helvetica is used as a Geist substitute (jsPDF built-in).
+     Brand colors carry the identity.
+     ======================================================== */
+  function buildPdf(values, email) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: "mm", format: "a4" });
+
+    const pageW = 210, pageH = 297;
+    const margin = 20;
+    const contentW = pageW - margin * 2;
+
+    /* --- Header band --- */
+    doc.setFillColor(...NE.darkBlue);
+    doc.rect(0, 0, pageW, 18, "F");
+
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...NE.white);
+    doc.setFontSize(11);
+    doc.text("NORDIC EDGE", margin, 11.5);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(255, 255, 255, 0.7);
+    doc.text("nordicedge.fi", pageW - margin, 11.5, { align: "right" });
+
+    /* --- Eyebrow --- */
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(...NE.hotPink);
+    doc.text("SELF-ASSESSMENT", margin, 32);
+
+    /* --- Title --- */
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(22);
+    doc.setTextColor(...NE.darkBlue);
+    doc.text("Self-awareness — your snapshot.", margin, 42);
+
+    /* --- Meta --- */
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(...NE.fgMuted);
+    doc.text(email, margin, 48);
+    doc.text(new Date().toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" }),
+             pageW - margin, 48, { align: "right" });
+
+    /* --- Hairline divider --- */
+    doc.setDrawColor(35, 0, 100);
+    doc.setLineWidth(0.15);
+    doc.line(margin, 53, pageW - margin, 53);
+
+    /* --- Questions --- */
+    let y = 62;
+    const blockH = 19;
+    const barH = 3;
+
+    QUESTIONS.forEach((q, i) => {
+      const v = values[i];
+      const pct = (v - 1) / 4;
+
+      /* Question number */
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7);
+      doc.setTextColor(...NE.fgMuted);
+      doc.text(String(i + 1).padStart(2, "0") + " / 11", margin, y);
+
+      /* Question text */
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10.5);
+      doc.setTextColor(...NE.darkBlue);
+      doc.text(q.text, margin, y + 4);
+
+      /* Endpoint labels */
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...NE.fgMuted);
+      doc.text(q.left, margin, y + 9);
+      const rightW = doc.getTextWidth(q.right);
+      doc.text(q.right, margin + contentW - rightW, y + 9);
+
+      /* Track (ice blue) */
+      doc.setFillColor(...NE.iceBlue);
+      doc.roundedRect(margin, y + 11, contentW, barH, barH / 2, barH / 2, "F");
+
+      /* Fill (dark blue) */
+      const fillW = contentW * pct;
+      if (fillW > 0) {
+        doc.setFillColor(...NE.darkBlue);
+        doc.roundedRect(margin, y + 11, fillW, barH, barH / 2, barH / 2, "F");
+      }
+
+      /* Thumb marker — sharp dark-blue rectangle (echoes N-cut) */
+      const thumbX = margin + fillW;
+      doc.setFillColor(...NE.darkBlue);
+      doc.rect(thumbX - 0.5, y + 9.6, 1, 5.8, "F");
+
+      /* Scale numbers */
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7);
+      doc.setTextColor(...NE.fgMuted);
+      for (let n = 1; n <= 5; n++) {
+        const x = margin + ((n - 1) / 4) * contentW;
+        const w = doc.getTextWidth(String(n));
+        doc.text(String(n), x - w / 2, y + 17.5);
+      }
+
+      y += blockH;
+    });
+
+    /* --- Footer band --- */
+    doc.setFillColor(...NE.darkBlue);
+    doc.rect(0, pageH - 14, pageW, 14, "F");
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(...NE.white);
+    doc.text("Activate the middle.", margin, pageH - 5.5);
+    doc.text("Helsinki, Finland", pageW - margin, pageH - 5.5, { align: "right" });
+
+    return doc;
+  }
+
+  /* ========================================================
+     SUBMIT HANDLER
+     ======================================================== */
+  const form = document.getElementById("assessmentForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const statusEl = document.getElementById("status");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    statusEl.textContent = "";
+    statusEl.className = "status";
+
+    const email = document.getElementById("email").value.trim();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      statusEl.textContent = "Please enter a valid email address.";
+      statusEl.classList.add("is-error");
+      return;
+    }
+
+    const values = QUESTIONS.map((_, i) => parseFloat(document.getElementById(`q${i}`).value));
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Generating PDF…";
+
+    let pdf;
+    try {
+      pdf = buildPdf(values, email);
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = "Couldn't generate the PDF. Please try again.";
+      statusEl.classList.add("is-error");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send my result";
+      return;
+    }
+
+    const pdfBlob = pdf.output("blob");
+    const downloadUrl = URL.createObjectURL(pdfBlob);
+
+    if (emailjsConfigured && window.emailjs) {
+      submitBtn.textContent = "Sending…";
+      try {
+        const base64 = pdf.output("datauristring").split(",")[1];
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email: email,
+          content: base64
+        });
+        showThankYou(email, downloadUrl, true);
+        return;
+      } catch (err) {
+        console.error("EmailJS send failed:", err);
+        /* fall through to download-only */
+      }
+    }
+    showThankYou(email, downloadUrl, false);
+  });
+
+  function showThankYou(email, downloadUrl, emailed) {
+    document.getElementById("formScreen").style.display = "none";
+    document.getElementById("thankYou").style.display = "block";
+
+    const headline = document.getElementById("thankYouHeadline");
+    const body = document.getElementById("thankYouBody");
+
+    if (emailed) {
+      headline.textContent = "Thanks. Your result is on the way.";
+      body.textContent = `We've sent your PDF to ${email}. Check your inbox in the next few minutes.`;
+    } else {
+      headline.textContent = "Your result is ready.";
+      body.textContent = `Email delivery isn't configured yet — download a copy of your PDF below.`;
+    }
+
+    const dl = document.getElementById("downloadLink");
+    dl.href = downloadUrl;
+    dl.download = "self-awareness-result.pdf";
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  /* Footer year */
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
