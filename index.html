@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Self-awareness self-assessment — Nordic Edge</title>
-<meta name="description" content="An eleven-question self-assessment from Nordic Edge. Five minutes, your result in your inbox as a PDF.">
+<meta name="description" content="An eleven-question self-assessment from Nordic Edge. Five minutes, save your snapshot as a PDF.">
 <link rel="stylesheet" href="./assets/colors_and_type.css">
 
 <style>
@@ -176,60 +176,39 @@
   }
 
   /* =========================================================
-     EMAIL + SUBMIT (ice blue card)
+     SAVE-AS-PDF CARD (ice blue, end of form)
      ========================================================= */
   .submit-card {
     margin-top: 56px;
     background: var(--bg-soft);
     border-radius: var(--radius-xl);
     padding: 40px;
+    border-left: 6px solid var(--accent);
+  }
+  .submit-card .warn-eyebrow {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    font-weight: var(--font-medium);
+    color: var(--accent);
+    margin: 0 0 12px;
   }
   .submit-card h3 {
     font-family: var(--font-subheading);
-    font-size: clamp(24px, 3vw, 32px);
+    font-size: clamp(26px, 3.4vw, 36px);
     line-height: 1.1;
-    margin: 0 0 8px;
+    margin: 0 0 12px;
     font-weight: var(--font-regular);
     color: var(--fg);
   }
   .submit-card p {
     font-size: var(--text-base);
-    color: var(--fg-muted);
-    margin: 0 0 24px;
-    max-width: 56ch;
-  }
-  .submit-card .alt-action {
-    font-size: var(--text-sm);
-    margin: -12px 0 28px;
-  }
-  .submit-card .alt-action kbd {
-    background: var(--bg);
-    border: 1px solid var(--fg-faint);
-    border-radius: var(--radius-sm);
-    padding: 1px 6px;
-    font-size: 0.85em;
-  }
-
-  .field { display: flex; flex-direction: column; gap: 8px; max-width: 480px; }
-  .field label {
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    font-weight: var(--font-medium);
-    color: var(--fg-subtle);
-  }
-  .field input[type="email"] {
-    padding: 14px 22px;
-    border-radius: var(--radius-full);
-    border: 2px solid var(--fg);
-    background: transparent;
     color: var(--fg);
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    outline: none;
+    margin: 0 0 24px;
+    max-width: 60ch;
+    line-height: 1.55;
   }
-  .field input[type="email"]::placeholder { color: var(--fg-faint); }
-  .field input[type="email"]:focus { border-color: var(--accent); }
+  .submit-card p strong { color: var(--fg); }
 
   .ne-btn {
     display: inline-flex; align-items: center; justify-content: center;
@@ -245,40 +224,26 @@
   .ne-btn--primary:hover { background: rgb(35 0 100 / 0.88); }
   .ne-btn--primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
-  .submit-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 24px; }
-
-  .status {
-    font-size: var(--text-sm);
-    color: var(--fg-muted);
-    min-height: 20px;
-  }
-  .status.is-error { color: var(--accent); }
+  .submit-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
 
   .helper {
-    font-size: var(--text-xs);
-    color: var(--fg-subtle);
-    margin-top: 16px;
-    line-height: 1.5;
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    margin-top: 20px;
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+  .helper kbd {
+    background: var(--bg);
+    border: 1px solid var(--fg-faint);
+    border-radius: var(--radius-sm);
+    padding: 1px 6px;
+    font-size: 0.85em;
   }
 
   /* =========================================================
-     THANK YOU / FOOTER
+     FOOTER
      ========================================================= */
-  .ne-section--bg-dark { background: var(--bg-dark); color: var(--fg-on-dark); }
-  .ne-section--bg-dark .ne-eyebrow { color: rgb(255 255 255 / 0.65); }
-
-  .ne-thanks { padding: 96px 0; display: none; }
-  .ne-thanks h2 {
-    font-family: var(--font-headline);
-    font-size: clamp(36px, 5vw, 60px);
-    line-height: 1.05;
-    letter-spacing: -0.005em;
-    margin: 0 0 20px;
-    max-width: 22ch;
-    color: var(--fg-on-dark);
-  }
-  .ne-thanks p { font-size: var(--text-lg); color: var(--fg-on-dark-muted); max-width: 56ch; margin: 0 0 28px; }
-
   .ne-link {
     display: inline-flex; align-items: center; gap: 8px;
     color: var(--fg-on-dark);
@@ -339,7 +304,6 @@
     /* Hide UI chrome that doesn't belong in the printed snapshot */
     .ne-header,
     .ne-footer,
-    .ne-thanks,
     .submit-card,
     .ne-hero .ne-list,
     .ne-hero .ne-eyebrow { display: none !important; }
@@ -467,7 +431,7 @@
       <p class="ne-eyebrow">Self-assessment</p>
       <h1>Self-awareness self-assessment.</h1>
       <p class="lead">Self-awareness is the foundation of leadership. Honest answers, no scoring.</p>
-      <p>Eleven questions. Five minutes. Your result in your inbox as a PDF.</p>
+      <p>Eleven questions. Five minutes. Save your snapshot as a PDF when you're done.</p>
 
       <ul class="ne-list" aria-hidden="false">
         <li>
@@ -486,7 +450,7 @@
           <svg class="bullet" viewBox="0 0 169.87 34.68" aria-hidden="true">
             <polygon fill="currentColor" points="169.87 34.68 169.87 0 0 34.68 169.87 34.68"></polygon>
           </svg>
-          <span>Enter your email at the end. We'll send your result and nothing else.</span>
+          <span>Save your snapshot as a PDF at the end — nothing is stored anywhere.</span>
         </li>
       </ul>
     </div>
@@ -495,46 +459,23 @@
   <!-- QUESTIONS + SUBMIT -->
   <section class="ne-form-wrap">
     <div class="ne-container">
-      <form id="assessmentForm" novalidate>
-        <div id="questions"></div>
+      <div id="questions"></div>
 
-        <!-- Email + submit card -->
-        <div class="submit-card">
-          <h3>Send me my result.</h3>
-          <p>We'll email you a PDF showing where you placed each slider. No scoring, no profile — just your snapshot.</p>
-          <p class="alt-action">Or save it yourself: open your browser's print menu (<kbd>⌘P</kbd> on Mac, <kbd>Ctrl&nbsp;+&nbsp;P</kbd> on Windows) and choose <strong>Save as PDF</strong>.</p>
+      <!-- Print / save card -->
+      <div class="submit-card" role="region" aria-label="Save your result">
+        <p class="warn-eyebrow">Important</p>
+        <h3>Save your snapshot — or it's gone.</h3>
+        <p><strong>Your answers live only on this page.</strong> Nothing is sent anywhere. If you close this tab, refresh, or navigate away, your snapshot disappears. Save it as a PDF now to keep it.</p>
 
-          <div class="field">
-            <label for="email">Your email address</label>
-            <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
-          </div>
-
-          <div class="submit-row">
-            <button type="submit" class="ne-btn ne-btn--primary" id="submitBtn">Send my result</button>
-            <span class="status" id="status" role="status" aria-live="polite"></span>
-          </div>
-
-          <p class="helper">We don't share your email. You can unsubscribe at any time — there's nothing to unsubscribe from yet.</p>
+        <div class="submit-row">
+          <button type="button" class="ne-btn ne-btn--primary" id="printBtn">Save my snapshot as PDF</button>
         </div>
-      </form>
+
+        <p class="helper">Clicking opens your browser's print menu — choose <strong>Save as PDF</strong> as the destination, then save the file. You can also use <kbd>⌘P</kbd> on Mac or <kbd>Ctrl&nbsp;+&nbsp;P</kbd> on Windows.</p>
+      </div>
     </div>
   </section>
 </main>
-
-<!-- ============================================================
-  THANK YOU SCREEN (full-bleed dark)
-============================================================ -->
-<section class="ne-section--bg-dark ne-thanks" id="thankYou">
-  <div class="ne-container">
-    <p class="ne-eyebrow">Done</p>
-    <h2 id="thankYouHeadline">Thanks. Your result is on the way.</h2>
-    <p id="thankYouBody">Check your inbox in the next few minutes.</p>
-    <a id="downloadLink" class="ne-link" download="self-awareness-result.pdf">
-      Or download a copy of the PDF
-      <span aria-hidden="true">&rarr;</span>
-    </a>
-  </div>
-</section>
 
 <!-- ============================================================
   FOOTER
@@ -560,31 +501,7 @@
   </div>
 </footer>
 
-<!-- ============================================================
-  LIBRARIES
-============================================================ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-
 <script>
-  /* ========================================================
-     CONFIG — paste EmailJS values to enable email delivery.
-     Setup steps are in README.md.
-     ======================================================== */
-  const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
-  const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";
-  const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-  /* ======================================================== */
-
-  /* Brand tokens (kept in sync with colors_and_type.css for the PDF) */
-  const NE = {
-    darkBlue:  [35, 0, 100],
-    iceBlue:   [200, 225, 255],
-    hotPink:   [255, 55, 135],
-    white:     [255, 255, 255],
-    fgMuted:   [115, 95, 155]   // approx of rgba(35,0,100,0.65) on white
-  };
-
   const QUESTIONS = [
     { text: "My thoughts are often:",                                left: "In the past",         right: "In the future" },
     { text: "When making decisions, I am:",                          left: "Slow",                right: "Quick" },
@@ -629,215 +546,11 @@
     update();
   });
 
-  /* EmailJS init (only if configured) */
-  const emailjsConfigured =
-    EMAILJS_PUBLIC_KEY  !== "YOUR_PUBLIC_KEY"  &&
-    EMAILJS_SERVICE_ID  !== "YOUR_SERVICE_ID"  &&
-    EMAILJS_TEMPLATE_ID !== "YOUR_TEMPLATE_ID";
-  if (emailjsConfigured && window.emailjs) {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-  }
-
-  /* ========================================================
-     PDF — drawn with jsPDF using NE brand tokens.
-     Helvetica is used as a Geist substitute (jsPDF built-in).
-     Brand colors carry the identity.
-     ======================================================== */
-  function buildPdf(values, email) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: "mm", format: "a4" });
-
-    const pageW = 210, pageH = 297;
-    const margin = 20;
-    const contentW = pageW - margin * 2;
-
-    /* --- Header band --- */
-    doc.setFillColor(...NE.darkBlue);
-    doc.rect(0, 0, pageW, 18, "F");
-
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...NE.white);
-    doc.setFontSize(11);
-    doc.text("NORDIC EDGE", margin, 11.5);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(255, 255, 255, 0.7);
-    doc.text("nordicedge.fi", pageW - margin, 11.5, { align: "right" });
-
-    /* --- Eyebrow --- */
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8);
-    doc.setTextColor(...NE.hotPink);
-    doc.text("SELF-ASSESSMENT", margin, 32);
-
-    /* --- Title --- */
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(22);
-    doc.setTextColor(...NE.darkBlue);
-    doc.text("Self-awareness — your snapshot.", margin, 42);
-
-    /* --- Meta --- */
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(...NE.fgMuted);
-    doc.text(email, margin, 48);
-    doc.text(new Date().toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" }),
-             pageW - margin, 48, { align: "right" });
-
-    /* --- Hairline divider --- */
-    doc.setDrawColor(35, 0, 100);
-    doc.setLineWidth(0.15);
-    doc.line(margin, 53, pageW - margin, 53);
-
-    /* --- Questions --- */
-    let y = 62;
-    const blockH = 19;
-    const barH = 3;
-
-    QUESTIONS.forEach((q, i) => {
-      const v = values[i];
-      const pct = (v - 1) / 4;
-
-      /* Question number */
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7);
-      doc.setTextColor(...NE.fgMuted);
-      doc.text(String(i + 1).padStart(2, "0") + " / 11", margin, y);
-
-      /* Question text */
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(10.5);
-      doc.setTextColor(...NE.darkBlue);
-      doc.text(q.text, margin, y + 4);
-
-      /* Endpoint labels */
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...NE.fgMuted);
-      doc.text(q.left, margin, y + 9);
-      const rightW = doc.getTextWidth(q.right);
-      doc.text(q.right, margin + contentW - rightW, y + 9);
-
-      /* Track (ice blue) */
-      doc.setFillColor(...NE.iceBlue);
-      doc.roundedRect(margin, y + 11, contentW, barH, barH / 2, barH / 2, "F");
-
-      /* Fill (dark blue) */
-      const fillW = contentW * pct;
-      if (fillW > 0) {
-        doc.setFillColor(...NE.darkBlue);
-        doc.roundedRect(margin, y + 11, fillW, barH, barH / 2, barH / 2, "F");
-      }
-
-      /* Thumb marker — sharp dark-blue rectangle (echoes N-cut) */
-      const thumbX = margin + fillW;
-      doc.setFillColor(...NE.darkBlue);
-      doc.rect(thumbX - 0.5, y + 9.6, 1, 5.8, "F");
-
-      /* Scale numbers */
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7);
-      doc.setTextColor(...NE.fgMuted);
-      for (let n = 1; n <= 5; n++) {
-        const x = margin + ((n - 1) / 4) * contentW;
-        const w = doc.getTextWidth(String(n));
-        doc.text(String(n), x - w / 2, y + 17.5);
-      }
-
-      y += blockH;
-    });
-
-    /* --- Footer band --- */
-    doc.setFillColor(...NE.darkBlue);
-    doc.rect(0, pageH - 14, pageW, 14, "F");
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(...NE.white);
-    doc.text("Activate the middle.", margin, pageH - 5.5);
-    doc.text("Helsinki, Finland", pageW - margin, pageH - 5.5, { align: "right" });
-
-    return doc;
-  }
-
-  /* ========================================================
-     SUBMIT HANDLER
-     ======================================================== */
-  const form = document.getElementById("assessmentForm");
-  const submitBtn = document.getElementById("submitBtn");
-  const statusEl = document.getElementById("status");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    statusEl.textContent = "";
-    statusEl.className = "status";
-
-    const email = document.getElementById("email").value.trim();
-    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-      statusEl.textContent = "Please enter a valid email address.";
-      statusEl.classList.add("is-error");
-      return;
-    }
-
-    const values = QUESTIONS.map((_, i) => parseFloat(document.getElementById(`q${i}`).value));
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Generating PDF…";
-
-    let pdf;
-    try {
-      pdf = buildPdf(values, email);
-    } catch (err) {
-      console.error(err);
-      statusEl.textContent = "Couldn't generate the PDF. Please try again.";
-      statusEl.classList.add("is-error");
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Send my result";
-      return;
-    }
-
-    const pdfBlob = pdf.output("blob");
-    const downloadUrl = URL.createObjectURL(pdfBlob);
-
-    if (emailjsConfigured && window.emailjs) {
-      submitBtn.textContent = "Sending…";
-      try {
-        const base64 = pdf.output("datauristring").split(",")[1];
-        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          to_email: email,
-          content: base64
-        });
-        showThankYou(email, downloadUrl, true);
-        return;
-      } catch (err) {
-        console.error("EmailJS send failed:", err);
-        /* fall through to download-only */
-      }
-    }
-    showThankYou(email, downloadUrl, false);
+  /* Print button — opens the browser's print menu, where the user
+     can choose "Save as PDF" as the destination. */
+  document.getElementById("printBtn").addEventListener("click", () => {
+    window.print();
   });
-
-  function showThankYou(email, downloadUrl, emailed) {
-    document.getElementById("formScreen").style.display = "none";
-    document.getElementById("thankYou").style.display = "block";
-
-    const headline = document.getElementById("thankYouHeadline");
-    const body = document.getElementById("thankYouBody");
-
-    if (emailed) {
-      headline.textContent = "Thanks. Your result is on the way.";
-      body.textContent = `We've sent your PDF to ${email}. Check your inbox in the next few minutes.`;
-    } else {
-      headline.textContent = "Your result is ready.";
-      body.textContent = `Email delivery isn't configured yet — download a copy of your PDF below.`;
-    }
-
-    const dl = document.getElementById("downloadLink");
-    dl.href = downloadUrl;
-    dl.download = "self-awareness-result.pdf";
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
 
   /* Footer year */
   document.getElementById("year").textContent = new Date().getFullYear();
